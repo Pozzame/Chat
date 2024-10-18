@@ -3,9 +3,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks.Dataflow;
 
-public class Server
+public class ChatServer
 {
-    private TcpListener listener;
+    private TcpListener? listener;
     public void StartServer (int port)
     {
         listener = new TcpListener(IPAddress.Any, port);
@@ -15,7 +15,7 @@ public class Server
         while(true)
         {
             TcpClient client = listener.AcceptTcpClient();
-            Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClient));
+            Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClient!));
             clientThread.Start(client);
         }
     }
@@ -38,5 +38,11 @@ public class Server
     private void Broadcast(string message)
     {
         
+    }
+
+    public static void Main(string[] args)
+    {
+        ChatServer server = new ChatServer();
+        server.StartServer(3000);
     }
 }

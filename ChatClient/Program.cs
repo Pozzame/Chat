@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 
 public class ChatClient
     {
@@ -9,10 +10,22 @@ public class ChatClient
             {
                 Console.WriteLine("Connesso al server");
                 string messageToSend = Console.ReadLine();
+
                 while (!string.IsNullOrEmpty(messageToSend))
                 {
-                    ping google.it
+                    byte[] buffer = Encoding.ASCII.GetBytes(messageToSend);
+                    stream.Write(buffer, 0, buffer.Length);
+
+                    messageToSend = Console.ReadLine();
                 }
             }
+        }
+
+        public static void Main( string[] args)
+        {
+            ChatClient Client  =new ChatClient();
+            Console.WriteLine("Inserisci l'IP del server:");
+            string serverIP = Console.ReadLine();
+            Client.StartServer(serverIP, 3000);
         }
     }
